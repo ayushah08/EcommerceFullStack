@@ -7,21 +7,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
-@Controller
+@RestController
 @RequestMapping("/api")
 public class ProductController {
 
     @Autowired
     private ProductService productService;
 
-    @PostMapping("/admin/{categoryId}/product")
+    @PostMapping("/admin/categories/{categoryId}/product")
     private ResponseEntity<ProductDTO> addProduct(@RequestBody Product product,
-                                                  @RequestParam Long categoryId) {
+                                                  @PathVariable Long categoryId) {
         ProductDTO savedProduct = productService.addProduct(product, categoryId);
 
         return new ResponseEntity(savedProduct, HttpStatus.CREATED);
