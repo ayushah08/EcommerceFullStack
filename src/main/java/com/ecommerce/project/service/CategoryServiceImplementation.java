@@ -52,6 +52,10 @@ public class CategoryServiceImplementation implements CategoryService {
     @Override
     public CategoryResponse getAllCategories(Integer  pageNumber , Integer pageSize , String sortBy , String order
     ){
+
+        if (!List.of("categoryId", "categoryName").contains(sortBy)) {
+            sortBy = "categoryId";
+        }
         Sort sort =order.equalsIgnoreCase("asc") ?
                 Sort.by(sortBy).ascending() :
                 Sort.by(sortBy).descending();
