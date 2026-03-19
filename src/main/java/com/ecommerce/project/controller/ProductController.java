@@ -2,11 +2,11 @@ package com.ecommerce.project.controller;
 
 import com.ecommerce.project.model.Product;
 import com.ecommerce.project.payLoad.ProductDTO;
+import com.ecommerce.project.payLoad.ProductResponse;
 import com.ecommerce.project.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -25,4 +25,12 @@ public class ProductController {
 
 
     }
+
+    @GetMapping("/public/products")
+    private ResponseEntity<ProductResponse> getAllProducts() {
+
+        ProductResponse productResponse = productService.getAllProducts();
+        return new ResponseEntity(productResponse, HttpStatus.OK);
+    }
+
 }
