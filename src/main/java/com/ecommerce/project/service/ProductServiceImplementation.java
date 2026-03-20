@@ -11,6 +11,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Type;
 import java.util.List;
 
 @Service
@@ -72,6 +73,28 @@ public class ProductServiceImplementation implements ProductService {
 
         return productResponse;
     }
+
+    @Override
+    public ProductDTO updateProduct(Product product, Long productId) {
+        Product foundProduct = productRepository.findById(productId).orElseThrow(()->new ResourceNotFoundException("Product" ,"ProductTd" , productId ));
+
+        foundProduct.builder()
+                .productName(product.getProductName())
+                .description(product.getDescription())
+                .quantity(product.getQuantity())
+                .price(product.getPrice())
+                .discount(product.getDiscount())
+                .specialPrice(product.getSpecialPrice())
+                .build();
+
+       Product savedProduct = productRepository.save(foundProduct);
+
+        return modelMapper.map(savedProduct,ProductDTO.class);
+
+    }
+
+
+
 
 
 }
