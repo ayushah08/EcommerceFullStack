@@ -40,12 +40,12 @@ public class ProductServiceImplementation implements ProductService {
 
     @Override
     public ProductResponse getAllProducts() {
-        List<Product> products =  productRepository.findAll();
-        List<ProductDTO> productDTOS = products.stream().map(product -> modelMapper.map(product , ProductDTO.class)).toList();
-            ProductResponse productResponse = new ProductResponse();
-            productResponse.setContent(productDTOS);
+        List<Product> products = productRepository.findAll();
+        List<ProductDTO> productDTOS = products.stream().map(product -> modelMapper.map(product, ProductDTO.class)).toList();
+        ProductResponse productResponse = new ProductResponse();
+        productResponse.setContent(productDTOS);
 
-            return productResponse;
+        return productResponse;
 
 
     }
@@ -55,11 +55,23 @@ public class ProductServiceImplementation implements ProductService {
         Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new ResourceNotFoundException("Category", "CategoryId", categoryId));
 
         List<Product> products = productRepository.getByCategoryOrderByPriceAsc(category);
-        List<ProductDTO> productDTOS = products.stream().map(product -> modelMapper.map(product , ProductDTO.class)).toList();
+        List<ProductDTO> productDTOS = products.stream().map(product -> modelMapper.map(product, ProductDTO.class)).toList();
         ProductResponse productResponse = new ProductResponse();
         productResponse.setContent(productDTOS);
 
         return productResponse;
     }
+
+    @Override
+    public ProductResponse getByKeyword(String keyword) {
+        List<Product> products = productRepository.findByProductNameLikeIgnoreCase("%" + keyword + "%");
+
+        List<ProductDTO> productDTOS = products.stream().map(product -> modelMapper.map(product, ProductDTO.class)).toList();
+        ProductResponse productResponse = new ProductResponse();
+        productResponse.setContent(productDTOS);
+
+        return productResponse;
+    }
+
 
 }

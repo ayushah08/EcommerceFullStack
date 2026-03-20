@@ -42,4 +42,10 @@ public class ProductController {
 
     }
 
+    @GetMapping("/public/products/keyword/{keyword}")
+    public  ResponseEntity<ProductResponse> getProductByKeyword(@PathVariable String keyword){
+        ProductResponse productResponse = productService.getByKeyword(keyword);
+        return new ResponseEntity(productResponse, HttpStatus.FOUND);
+    }
+
 }
