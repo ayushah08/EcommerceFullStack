@@ -93,8 +93,13 @@ public class ProductServiceImplementation implements ProductService {
 
     }
 
+    @Override
+    public ProductResponse deleteProduct(Long productId) {
+        Product product = productRepository.findById(productId).orElseThrow(()-> new ResourceNotFoundException("Product" ,"ProductTd" , productId));
+        productRepository.delete(product);
 
-
+        return modelMapper.map(product , ProductResponse.class);
+    }
 
 
 }

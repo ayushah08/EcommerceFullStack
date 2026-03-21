@@ -56,4 +56,12 @@ public class ProductController {
         return new ResponseEntity(productDTO , HttpStatus.ACCEPTED);
     }
 
+    @DeleteMapping("/admin/products/{productId}")
+    public ResponseEntity<ProductResponse> deleteProduct(@PathVariable Long productId){
+
+        ProductResponse product = productService.deleteProduct(productId);
+        return new ResponseEntity(product , HttpStatus.OK);
+
+    }
+
 }
