@@ -11,7 +11,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Type;
 import java.util.List;
 
 @Service
@@ -25,8 +24,8 @@ public class ProductServiceImplementation implements ProductService {
     private ModelMapper modelMapper;
 
     @Override
-    public ProductDTO addProduct(Product product, Long categoryId) {
-
+    public ProductDTO addProduct( ProductDTO productDTO, Long categoryId) {
+        Product product = modelMapper.map(productDTO , Product.class);
         Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new ResourceNotFoundException("Category", "CategoryId", categoryId));
         product.setImage("default.url");
         product.setCategory(category);
@@ -75,7 +74,9 @@ public class ProductServiceImplementation implements ProductService {
     }
 
     @Override
-    public ProductDTO updateProduct(Product product, Long productId) {
+    public ProductDTO updateProduct( ProductDTO productDTO, Long productId) {
+        Product product = modelMapper.map(productDTO , Product.class);
+
         Product foundProduct = productRepository.findById(productId).orElseThrow(()->new ResourceNotFoundException("Product" ,"ProductTd" , productId ));
 
         foundProduct.builder()
