@@ -1,6 +1,5 @@
 package com.ecommerce.project.controller;
 
-import com.ecommerce.project.model.Product;
 import com.ecommerce.project.payLoad.ProductDTO;
 import com.ecommerce.project.payLoad.ProductResponse;
 import com.ecommerce.project.service.ProductService;
@@ -8,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/api")
@@ -62,6 +64,14 @@ public class ProductController {
         ProductResponse product = productService.deleteProduct(productId);
         return new ResponseEntity(product , HttpStatus.OK);
 
+    }
+
+    @PutMapping("/admin/{productId}/image")
+    public ResponseEntity<ProductDTO> updateProductImages(@PathVariable Long productId ,
+                                                          @RequestParam("image") MultipartFile file) throws IOException {
+
+        ProductDTO productImage = productService.UpdateProductImage(productId , file);
+        return new ResponseEntity(productImage , HttpStatus.OK);
     }
 
 }
