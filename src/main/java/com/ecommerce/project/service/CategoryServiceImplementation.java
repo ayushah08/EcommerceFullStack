@@ -14,7 +14,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import javax.swing.*;
 import java.util.List;
 
 
@@ -28,13 +27,11 @@ public class CategoryServiceImplementation implements CategoryService {
     private ModelMapper modelMapper;
 
 
-
-
     //ToCreate
     @Override
     public CategoryDTO createCategories(CategoryDTO category) {
-        Category category1 = modelMapper.map(category,Category.class);
-     Category findCategory =    categoryRepository.findByCategoryName(category.getCategoryName());
+        Category category1 = modelMapper.map(category, Category.class);
+        Category findCategory = categoryRepository.findByCategoryName(category.getCategoryName());
 
         if (findCategory != null) {
             throw new ApiException("Category with " + category.getCategoryName() + " already Exists !!!!");
@@ -43,24 +40,24 @@ public class CategoryServiceImplementation implements CategoryService {
         categoryRepository.save(category1);
 
 
-        return modelMapper.map(category1,CategoryDTO.class);
+        return modelMapper.map(category1, CategoryDTO.class);
     }
 
 
     //ToGetAll
 
     @Override
-    public CategoryResponse getAllCategories(Integer  pageNumber , Integer pageSize , String sortBy , String order
-    ){
+    public CategoryResponse getAllCategories(Integer pageNumber, Integer pageSize, String sortBy, String order
+    ) {
 
         if (!List.of("categoryId", "categoryName").contains(sortBy)) {
             sortBy = "categoryId";
         }
-        Sort sort =order.equalsIgnoreCase("asc") ?
+        Sort sort = order.equalsIgnoreCase("asc") ?
                 Sort.by(sortBy).ascending() :
                 Sort.by(sortBy).descending();
 
-        Pageable pageable = PageRequest.of(pageNumber , pageSize , sort);
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
         Page<Category> categoryPage = categoryRepository.findAll(pageable);
 
 
@@ -95,14 +92,13 @@ public class CategoryServiceImplementation implements CategoryService {
     //ToUpdate
     @Override
     public CategoryDTO UpdateCategory(CategoryDTO categorydto, Long id) {
-        Category category = modelMapper.map(categorydto,Category.class);
+        Category category = modelMapper.map(categorydto, Category.class);
 
         Category SavedCategory = categoryRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Category", "Category id", id));
         category.setCategoryId(id);
         SavedCategory = categoryRepository.save(category);
-        return modelMapper.map(SavedCategory , CategoryDTO.class);
+        return modelMapper.map(SavedCategory, CategoryDTO.class);
     }
-
 
 
     //ToDelete
@@ -113,7 +109,7 @@ public class CategoryServiceImplementation implements CategoryService {
         Category category = categoryRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Category", "Category id", id));
 
         categoryRepository.delete(category);
-        return modelMapper.map(category,CategoryDTO.class);
+        return modelMapper.map(category, CategoryDTO.class);
     }
 
 
